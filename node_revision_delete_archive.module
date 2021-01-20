@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Archives deleted revisions to various storages (like the file storage).
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\node_revision_delete_archive\RevisionArchiveStorageManagerInterface;
+
+/**
+ * Implements hook_entity_revision_delete().
+ */
+function node_revision_delete_archive_entity_revision_delete(EntityInterface $revision) {
+  /* @var RevisionArchiveStorageManagerInterface $archive_manager */
+  $archive_manager = \Drupal::service('plugin.manager.node_revision_delete_archive_storage');
+  $archive_manager->archive($revision);
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function node_revision_delete_archive_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  // Set these fields as not internal, so that they can be archived.
+  if (!empty($fields['revision_parent'])) {
+    $fields['revision_parent']->setInternal(false);
+  }
+  if (!empty($fields['revision_merge_parent'])) {
+    $fields['revision_merge_parent']->setInternal(false);
+  }
+}

@@ -1,0 +1,6 @@
+node_revision_delete_archive.storage_settings:
+  title: 'Node Revision Delete Archive'
+  route_name: node_revision_delete_archive.storage_settings
+  description: 'Settings for the archiving the deleted revisions.'
+  parent: system.admin_config_content
+  weight: 100

@@ -1,0 +1,7 @@
+settings:
+  version: VERSION
+  js:
+    js/settings.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

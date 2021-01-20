@@ -1,0 +1,9 @@
+node_revision_delete_archive.storage_settings:
+  path: '/admin/config/content/node_revision_delete/archive_storage'
+  defaults:
+    _form: '\Drupal\node_revision_delete_archive\Form\ArchiveStorageSettingsForm'
+    _title: 'Revision archive storage'
+  requirements:
+    _permission: 'administer node_revision_delete'
+  options:
+    _admin_route: TRUE

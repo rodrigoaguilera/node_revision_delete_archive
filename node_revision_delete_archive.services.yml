@@ -1,0 +1,5 @@
+services:
+  plugin.manager.node_revision_delete_archive_storage:
+    class: Drupal\node_revision_delete_archive\RevisionArchiveStorageManager
+    parent: default_plugin_manager
+    arguments: ['@config.factory', '@language_manager']
