@@ -4,6 +4,7 @@ namespace Drupal\node_revision_delete_archive\Plugin\RevisionArchiveStorage;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Entity\RevisionableInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -168,7 +169,11 @@ class RevisionArchiveStorageFS extends RevisionArchiveStoragePluginBase implemen
   protected function doArchive(EntityInterface $revision, $destinationFolder, $filename = NULL) {
     // Use the id of the entity if no filename is specified.
     if (empty($filename)) {
-      $filename = $revision->id() . '.json';
+      $filename = $revision->id();
+      if ($revision instanceof RevisionableInterface) {
+        $filename .= '-' . $revision->getRevisionId();
+      }
+      $filename .= '.json';
     }
     // When serializing the content, we want to export all the possible fields,
     // so put the user 1 in the context.
@@ -176,7 +181,6 @@ class RevisionArchiveStorageFS extends RevisionArchiveStoragePluginBase implemen
       'account' => User::load(1),
     ];
     $output = $this->serializer->serialize($revision, 'json', $context);
-    // Append the serialized output to the file.
-    file_put_contents($destinationFolder . '/' . $filename, $output . PHP_EOL, FILE_APPEND | LOCK_EX);
+    file_put_contents($destinationFolder . '/' . $filename, $output);
   }
 }
